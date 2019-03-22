@@ -13,7 +13,7 @@ class PageDetails extends Component {
   componentDidMount() {
     //console.log('https://gateway.marvel.com' + '/v1/public/characters/1011334?apikey=' + '28eaf05072bfa7e8bd854d769e3dd9de')
     fetch(
-      "http://gateway.marvel.com/v1/public/characters/1009144?apikey=673d23d837a3c5a7be3dd08708c919c1",
+      "http://gateway.marvel.com/v1/public/characters/1009144?apikey=28eaf05072bfa7e8bd854d769e3dd9de",
       {
         headers: {
           Referer: "localhost"
@@ -35,8 +35,8 @@ class PageDetails extends Component {
     var image =
       this.state.character &&
       this.state.character.thumbnail.path +
-        "." +
-        this.state.character.thumbnail.extension;
+      "." +
+      this.state.character.thumbnail.extension;
     return this.state.character ? (
       <ScrollView style={styles.detailView}>
         <View style={styles.detailTitleView}>

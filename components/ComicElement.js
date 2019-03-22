@@ -16,7 +16,7 @@ class ComicElement extends Component {
 
   componentDidMount() {
     //console.log(this.props.resource+ '?apikey=673d23d837a3c5a7be3dd08708c919c1');
-    fetch(this.props.resource + "?apikey=673d23d837a3c5a7be3dd08708c919c1", {
+    fetch(this.props.resource + "?apikey=28eaf05072bfa7e8bd854d769e3dd9de", {
       headers: {
         Referer: "localhost"
       }
@@ -40,8 +40,8 @@ class ComicElement extends Component {
     var image =
       this.state.comic &&
       this.state.comic.thumbnail.path +
-        "." +
-        this.state.comic.thumbnail.extension;
+      "." +
+      this.state.comic.thumbnail.extension;
     let window = Dimensions.get("window");
     //console.log(image);
     return (

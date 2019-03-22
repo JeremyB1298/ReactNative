@@ -1,6 +1,6 @@
 //Base
 import React, { Component } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 //CSS
 import styles from "./style/PageList.style";
@@ -8,6 +8,9 @@ import styles from "./style/PageList.style";
 
 
 class PageList extends Component {
+    static navigationOptions = {
+        title: 'Marvel Search',
+    };
     constructor(props) {
         super(props)
 
@@ -32,7 +35,7 @@ class PageList extends Component {
     fetchDataFromAPI = () => {
         if (this.state.inSearch) {
             this.setState({ isSearchLoading: true })
-            fetch('http://gateway.marvel.com/v1/public/characters?apikey=673d23d837a3c5a7be3dd08708c919c1&offset=' + this.state.offset + "&nameStartsWith=" + this.state.searchVal, {
+            fetch('http://gateway.marvel.com/v1/public/characters?apikey=28eaf05072bfa7e8bd854d769e3dd9de&offset=' + this.state.offset + "&nameStartsWith=" + this.state.searchVal, {
                 headers: {
                     Referer: 'localhost'
                 }
@@ -49,7 +52,7 @@ class PageList extends Component {
         } else {
             console.log("Loading data with offset " + this.state.offset)
             this.setState({ loading: true })
-            fetch('http://gateway.marvel.com/v1/public/characters?apikey=673d23d837a3c5a7be3dd08708c919c1&offset=' + this.state.offset, {
+            fetch('http://gateway.marvel.com/v1/public/characters?apikey=28eaf05072bfa7e8bd854d769e3dd9de&offset=' + this.state.offset, {
                 headers: {
                     Referer: 'localhost'
                 }
@@ -108,8 +111,9 @@ class PageList extends Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
         return (
-            <View style={styles.paddingTopSB}>
+            <View style={styles.globalView}>
                 <SearchBar
                     placeholder="Rechercher..."
                     onChangeText={this.updateSearch}
@@ -130,12 +134,15 @@ class PageList extends Component {
                             this.addOffset()
                         }}
                         renderItem={({ item }) =>
-                            <ListItem
-                                key={item.id}
-                                leftAvatar={{ source: { uri: item.thumbnail.path + "." + item.thumbnail.extension } }}
-                                title={item.name}
-                                subtitle={this.trimDescription(item.description)}
-                            />
+                            <TouchableOpacity onPress={() => navigate('Detail', { id: item.id })} key={item.id}>
+                                <ListItem
+                                    key={item.id}
+                                    leftAvatar={{ source: { uri: item.thumbnail.path + "." + item.thumbnail.extension } }}
+                                    title={item.name}
+                                    subtitle={this.trimDescription(item.description)}
+                                />
+                            </TouchableOpacity>
+
                         }
                         keyExtractor={(item, index) => index.toString()}
                     />

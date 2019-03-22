@@ -6,8 +6,7 @@ export default StyleSheet.create({
     colorBlue: {
         backgroundColor: 'yellow'
     },
-    paddingTopSB: {
-        paddingTop: 24.1,
+    globalView: {
         flex: 10
     },
     searchBar: {
