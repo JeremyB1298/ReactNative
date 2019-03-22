@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Image, Overlay } from "react-native-elements";
 
-import styles from "./style/Comic.style";
+import styles from "../style/Comic.style";
 
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 

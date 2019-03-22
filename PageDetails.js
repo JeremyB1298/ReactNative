@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Avatar } from "react-native-elements";
-import ComicList from "./ComicList";
+import ComicList from "./components/ComicList";
 
 import styles from "./style/Comic.style";
 

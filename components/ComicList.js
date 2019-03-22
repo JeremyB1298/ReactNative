@@ -2,7 +2,7 @@ import React from "react";
 import ComicElement from "./ComicElement";
 import { View, Text, FlatList, Dimensions } from "react-native";
 
-import styles from "./style/Comic.style";
+import styles from "../style/Comic.style";
 
 class ComicList extends React.Component {
   constructor(props) {
