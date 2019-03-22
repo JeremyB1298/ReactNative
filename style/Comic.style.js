@@ -44,5 +44,10 @@ export default StyleSheet.create({
   detailImageComicTable: {
     width: window.width / 4 - 20,
     height: 110
+  },
+  message: {
+    alignSelf: "center",
+    margin: 8,
+    color: "gray"
   }
 });

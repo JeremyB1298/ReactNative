@@ -40,30 +40,36 @@ class ComicElement extends Component {
   }
 
   render() {
-    var image =
-      this.state.comic &&
-      this.state.comic.thumbnail.path +
+    if (this.state.comic) {
+      var image =
+        this.state.comic &&
+        this.state.comic.thumbnail.path +
         "." +
         this.state.comic.thumbnail.extension;
+    } else {
+      var image = ""
+    }
+
     let window = Dimensions.get("window");
     //console.log(image);
     return (
-      <TouchableOpacity onPress={() => this.imagePressed()}>
-        <View style={styles.comicView}>
-          <Overlay
-            isVisible={this.state.imagePressed}
-            onBackdropPress={() => this.setState({ imagePressed: false })}
-            width="auto"
-            height="auto"
-          >
-            <Image source={{ uri: image }} style={styles.detailImageComic} />
-          </Overlay>
-          <Image source={{ uri: image }} style={styles.detailImageComicTable} />
-          <Text style={styles.detailComicTitle}>
-            {this.state.comic && this.state.comic.title}{" "}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      this.state.comic ?
+        <TouchableOpacity onPress={() => this.imagePressed()}>
+          <View style={styles.comicView}>
+            <Overlay
+              isVisible={this.state.imagePressed}
+              onBackdropPress={() => this.setState({ imagePressed: false })}
+              width="auto"
+              height="auto"
+            >
+              <Image source={{ uri: image }} style={styles.detailImageComic} />
+            </Overlay>
+            <Image source={{ uri: image }} style={styles.detailImageComicTable} />
+            <Text style={styles.detailComicTitle}>
+              {this.state.comic && this.state.comic.title}{" "}
+            </Text>
+          </View>
+        </TouchableOpacity> : <Text></Text>
     );
   }
 }

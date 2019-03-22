@@ -15,7 +15,7 @@ class PageDetails extends Component {
     super(props);
     const { navigation } = this.props;
     this.state = {
-      character: null,
+      character: [],
       id: navigation.getParam("id", "1011334")
     };
   }
@@ -48,13 +48,18 @@ class PageDetails extends Component {
   }
 
   render() {
-    var image =
-      this.state.character &&
-      this.state.character.thumbnail.path +
-      "." +
-      this.state.character.thumbnail.extension;
+    if (this.state.character.length != 0) {
+      var image =
+        this.state.character &&
+        this.state.character.thumbnail.path +
+        "." +
+        this.state.character.thumbnail.extension;
+    } else {
+      var image = ""
+    }
 
-    return this.state.character ? (
+
+    return this.state.character.length != 0 ? (
       <ScrollView style={styles.detailView}>
         <View style={styles.detailTitleView}>
           <Avatar
@@ -76,7 +81,7 @@ class PageDetails extends Component {
 
         <ComicList list={this.state.character.comics.items} />
       </ScrollView>
-    ) : null;
+    ) : <Text style={styles.message}>Chargement des données en cours...</Text>;
   }
 }
 

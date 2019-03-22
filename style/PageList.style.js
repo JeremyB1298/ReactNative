@@ -22,9 +22,6 @@ export default StyleSheet.create({
         top: height / 1.25,
         alignSelf: "center"
     },
-    messageView: {
-        width: width
-    },
     message: {
         alignSelf: "center",
         margin: 8,

@@ -11,20 +11,21 @@ class ComicList extends React.Component {
 
   render() {
     return (
-      <View style={styles.detailComicView}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={this.props.list}
-          renderItem={({ item }) => (
-            <ComicElement
-              key={item.id}
-              resource={item.resourceURI}
-              name={item.title}
-            />
-          )}
-          numColumns={4}
-        />
-      </View>
+      this.props.list.length != 0 ?
+        <View style={styles.detailComicView}>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={this.props.list}
+            renderItem={({ item }) => (
+              <ComicElement
+                key={item.id}
+                resource={item.resourceURI}
+                name={item.title}
+              />
+            )}
+            numColumns={4}
+          />
+        </View> : <Text>Pas de données...</Text>
     );
   }
 }

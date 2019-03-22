@@ -148,7 +148,7 @@ class PageList extends Component {
                         keyExtractor={(item, index) => index.toString()}
                     />
                     :
-                    <View style={styles.messageView}>
+                    <View>
                         {this.state.inSearch ? <Text style={styles.message}>Aucun héros trouvé...</Text> : <Text style={styles.message}>Chargement des données...</Text>}
                     </View>}
 
