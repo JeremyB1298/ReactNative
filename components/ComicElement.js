@@ -27,6 +27,9 @@ class ComicElement extends Component {
         this.setState({
           comic: json.data.results[0]
         });
+      })
+      .catch(error => {
+        console.log("error fetching data: " + error);
       });
   }
 
@@ -40,8 +43,8 @@ class ComicElement extends Component {
     var image =
       this.state.comic &&
       this.state.comic.thumbnail.path +
-      "." +
-      this.state.comic.thumbnail.extension;
+        "." +
+        this.state.comic.thumbnail.extension;
     let window = Dimensions.get("window");
     //console.log(image);
     return (

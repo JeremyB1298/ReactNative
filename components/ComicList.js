@@ -13,6 +13,7 @@ class ComicList extends React.Component {
     return (
       <View style={styles.detailComicView}>
         <FlatList
+          keyExtractor={(item, index) => index.toString()}
           data={this.props.list}
           renderItem={({ item }) => (
             <ComicElement
