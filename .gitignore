@@ -311,3 +311,4 @@ Temporary Items
 .nfs*
 
 # End of https://www.gitignore.io/api/node,reactnative
+\.vscode/settings\.json
