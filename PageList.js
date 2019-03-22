@@ -10,6 +10,7 @@ import styles from "./style/PageList.style";
 class PageList extends Component {
     static navigationOptions = {
         title: 'Marvel Search',
+        headerTintColor: '#e61b23',
     };
     constructor(props) {
         super(props)
@@ -146,7 +147,10 @@ class PageList extends Component {
                         }
                         keyExtractor={(item, index) => index.toString()}
                     />
-                    : null}
+                    :
+                    <View style={styles.messageView}>
+                        {this.state.inSearch ? <Text style={styles.message}>Aucun héros trouvé...</Text> : <Text style={styles.message}>Chargement des données...</Text>}
+                    </View>}
 
                 {this.state.loading && !this.state.inSearch && <ActivityIndicator style={styles.loadingActivityIndicator} size="large" color="#E61B23" />}
 

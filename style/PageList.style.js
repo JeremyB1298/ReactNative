@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-let { height } = Dimensions.get('window')
+let { height, width } = Dimensions.get('window')
 
 export default StyleSheet.create({
     colorBlue: {
@@ -19,7 +19,15 @@ export default StyleSheet.create({
         height: 30,
         margin: 8,
         position: "absolute",
-        top: height - 48,
+        top: height / 1.25,
         alignSelf: "center"
+    },
+    messageView: {
+        width: width
+    },
+    message: {
+        alignSelf: "center",
+        margin: 8,
+        color: "gray"
     }
 });
