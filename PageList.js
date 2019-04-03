@@ -1,7 +1,7 @@
 //Base
 import React, { Component } from 'react';
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-elements';
+import { ListItem, SearchBar, Icon } from 'react-native-elements';
 //CSS
 import styles from "./style/PageList.style";
 //Custom Components
@@ -11,6 +11,15 @@ class PageList extends Component {
     static navigationOptions = {
         title: 'Marvel Search',
         headerTintColor: '#e61b23',
+        headerRight: (
+            <View style={styles.topBarIcon}>
+                <Icon
+                    name='star'
+                    type='material'
+                    color='#ffe100'
+                    onPress={() => console.log('Favorites !')} />
+            </View>
+        )
     };
     constructor(props) {
         super(props)
@@ -113,6 +122,7 @@ class PageList extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
+        const favorites = [1011334, 1009146];
         return (
             <View style={styles.globalView}>
                 <SearchBar
@@ -141,6 +151,12 @@ class PageList extends Component {
                                     leftAvatar={{ source: { uri: item.thumbnail.path + "." + item.thumbnail.extension } }}
                                     title={item.name}
                                     subtitle={this.trimDescription(item.description)}
+                                    rightIcon={{
+                                        name: favorites.contains(item.id) ? 'star' : 'star-border',
+                                        type: 'material',
+                                        color: '#ffe100',
+                                        onPress: () => console.log('Favorited ' + item.id)
+                                    }}
                                 />
                             </TouchableOpacity>
 

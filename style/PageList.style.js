@@ -26,5 +26,8 @@ export default StyleSheet.create({
         alignSelf: "center",
         margin: 8,
         color: "gray"
+    },
+    topBarIcon: {
+        paddingRight: 15
     }
 });
