@@ -1,6 +1,6 @@
 //Base
 import React, { Component } from 'react';
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, AsyncStorage } from 'react-native';
 import { ListItem, SearchBar, Icon } from 'react-native-elements';
 //CSS
 import styles from "./style/PageList.style";
@@ -30,7 +30,8 @@ class PageList extends Component {
             offset: 0,
             loading: false,
             inSearch: false,
-            isSearchLoading: false
+            isSearchLoading: false,
+            favorites: []
         }
     }
 
@@ -84,6 +85,7 @@ class PageList extends Component {
 
     componentDidMount() {
         this.fetchDataFromAPI()
+        this.getAllFromFavorites()
     }
 
     updateSearch = (searchVal) => {
@@ -115,9 +117,38 @@ class PageList extends Component {
             isSearchLoading: false,
             characters: [],
             offset: 0,
-            searchVael: ''
+            searchVal: ''
         }, () => this.fetchDataFromAPI())
 
+    }
+
+    addToFavorites = (itemId) => {
+        var favs = this.state.favorites
+        favs.push(itemId)
+        this.setState({ favorites: favs }, () => this.syncDataFavorites())
+    }
+
+    syncDataFavorites = async () => {
+        try {
+            await AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.favorites));
+        } catch (error) {
+            console.log("Can't save with AsyncStorage", error)
+        }
+    }
+
+    getAllFromFavorites = async () => {
+        try {
+            console.log("Fetching from asyncstorage")
+            const value = await AsyncStorage.getItem('@MySuperStore:key');
+            if (value != null) {
+                // We have data!!
+                console.log(JSON.parse(value))
+                var favs = JSON.parse(value)
+                this.setState({ favorites: favs })
+            }
+        } catch (error) {
+            console.log("Can't load with AsyncStorage", error)
+        }
     }
 
     render() {
@@ -152,10 +183,10 @@ class PageList extends Component {
                                     title={item.name}
                                     subtitle={this.trimDescription(item.description)}
                                     rightIcon={{
-                                        name: favorites.contains(item.id) ? 'star' : 'star-border',
+                                        name: this.state.favorites.includes(item.id) ? 'star' : 'star-border',
                                         type: 'material',
                                         color: '#ffe100',
-                                        onPress: () => console.log('Favorited ' + item.id)
+                                        onPress: () => this.addToFavorites(item.id)
                                     }}
                                 />
                             </TouchableOpacity>
