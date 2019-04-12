@@ -12,12 +12,15 @@ class PageList extends Component {
         title: 'Marvel Search',
         headerTintColor: '#e61b23',
         headerRight: (
-            <View style={styles.topBarIcon}>
-                <Icon
-                    name='star'
-                    type='material'
-                    color='#ffe100'
-                    onPress={() => console.log('Favorites !')} />
+            <View>
+                <TouchableOpacity style={styles.topBarIcon} onPress={() => console.log('Favorites !')} >
+                    <Text style={styles.textFavorites}>Favoris</Text>
+                    <Icon
+                        name='star'
+                        type='material'
+                        size={28}
+                        color='#ffe100' />
+                </TouchableOpacity>
             </View>
         )
     };
@@ -124,7 +127,16 @@ class PageList extends Component {
 
     addToFavorites = (itemId) => {
         var favs = this.state.favorites
-        favs.push(itemId)
+        if (!this.state.favorites.includes(itemId)) {
+            favs.push(itemId)
+        } else {
+            for (var i = 0; i < favs.length; i++) {
+                if (favs[i] === itemId) {
+                    favs.splice(i, 1);
+                }
+            }
+        }
+
         this.setState({ favorites: favs }, () => this.syncDataFavorites())
     }
 
@@ -138,11 +150,11 @@ class PageList extends Component {
 
     getAllFromFavorites = async () => {
         try {
-            console.log("Fetching from asyncstorage")
+            console.log("Fetching favorites from asyncstorage")
             const value = await AsyncStorage.getItem('@MySuperStore:key');
             if (value != null) {
                 // We have data!!
-                console.log(JSON.parse(value))
+                //console.log(JSON.parse(value))
                 var favs = JSON.parse(value)
                 this.setState({ favorites: favs })
             }

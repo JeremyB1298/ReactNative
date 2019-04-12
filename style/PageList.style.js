@@ -28,6 +28,14 @@ export default StyleSheet.create({
         color: "gray"
     },
     topBarIcon: {
-        paddingRight: 15
+        paddingRight: 15,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    textFavorites: {
+        fontWeight: "bold",
+        marginRight: 5,
+        color: "#ffe100"
     }
 });
