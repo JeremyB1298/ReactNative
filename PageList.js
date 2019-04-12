@@ -8,22 +8,7 @@ import styles from "./style/PageList.style";
 
 
 class PageList extends Component {
-    static navigationOptions = {
-        title: 'Marvel Search',
-        headerTintColor: '#e61b23',
-        headerRight: (
-            <View>
-                <TouchableOpacity style={styles.topBarIcon} onPress={() => console.log('Favorites !')} >
-                    <Text style={styles.textFavorites}>Favoris</Text>
-                    <Icon
-                        name='star'
-                        type='material'
-                        size={28}
-                        color='#ffe100' />
-                </TouchableOpacity>
-            </View>
-        )
-    };
+
     constructor(props) {
         super(props)
 
@@ -34,8 +19,38 @@ class PageList extends Component {
             loading: false,
             inSearch: false,
             isSearchLoading: false,
-            favorites: []
+            favorites: [],
+            filteredByFavorites: false
         }
+    }
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Marvel Search',
+            headerTintColor: '#e61b23',
+            headerRight: (
+                <View>
+                    <TouchableOpacity style={styles.topBarIcon} onPress={() => navigation.getParam('filterFavorites')()} >
+                        <Text style={styles.textFavorites}>Favoris</Text>
+                        <Icon
+                            name={navigation.getParam('filteredByFavorites') ? 'star' : 'star-border'}
+                            type='material'
+                            size={28}
+                            color='#ffe100' />
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    }
+
+
+    componentDidMount() {
+        this.fetchDataFromAPI()
+        this.getAllFromFavorites()
+        this.props.navigation.setParams({
+            filterFavorites: this.filterByFavorites,
+            filteredByFavorites: false,
+        })
     }
 
     addOffset() {
@@ -85,11 +100,6 @@ class PageList extends Component {
         }
 
     };
-
-    componentDidMount() {
-        this.fetchDataFromAPI()
-        this.getAllFromFavorites()
-    }
 
     updateSearch = (searchVal) => {
         this.setState({ searchVal })
@@ -163,9 +173,20 @@ class PageList extends Component {
         }
     }
 
+    filterByFavorites = () => {
+        console.log("filtering by favorites")
+        this.setState({ filteredByFavorites: !this.state.filteredByFavorites })
+        this.props.navigation.setParams({
+            filteredByFavorites: this.state.filteredByFavorites,
+        })
+        if (this.state.filteredByFavorites) {
+
+        }
+
+    }
+
     render() {
         const { navigate } = this.props.navigation;
-        const favorites = [1011334, 1009146];
         return (
             <View style={styles.globalView}>
                 <SearchBar
