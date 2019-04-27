@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react_native_project",
-    "slug": "react_native",
+    "name": "Marvel Search",
+    "slug": "marvel_search",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -14,7 +14,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F41A12"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
