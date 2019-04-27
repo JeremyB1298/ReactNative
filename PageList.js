@@ -74,12 +74,12 @@ class PageList extends Component {
                 this.setState({
                     characters: json.data.results,
                     isSearchLoading: false
-                }, console.log("get with search"))
+                })
             }).catch((error) => {
-                console.log("error fetching data: " + error)
+                //console.log("error fetching data: " + error)
             })
         } else {
-            console.log("Loading data with offset " + this.state.offset)
+            // console.log("Loading data with offset " + this.state.offset)
             this.setState({ loading: true })
             fetch('http://gateway.marvel.com/v1/public/characters?apikey=28eaf05072bfa7e8bd854d769e3dd9de&offset=' + this.state.offset, {
                 headers: {
@@ -93,13 +93,31 @@ class PageList extends Component {
                         ? this.state.characters.concat(json.data.results)
                         : json.data.results,
                     loading: false
-                }, console.log("get without search"))
+                })
             }).catch((error) => {
-                console.log("error fetching data -> " + error)
+                // console.log("error fetching data -> " + error)
             })
         }
 
     };
+
+    fetchOneFromAPI = (id) => {
+        this.setState({ isSearchLoading: true })
+        fetch('http://gateway.marvel.com/v1/public/characters/' + id + '?apikey=28eaf05072bfa7e8bd854d769e3dd9de', {
+            headers: {
+                Referer: 'localhost'
+            }
+        }).then(responseJson =>
+            responseJson.json()
+        ).then(json => {
+            this.state.characters.push(json.data.results[0])
+            this.setState({
+                isSearchLoading: false
+            })
+        }).catch((error) => {
+            //console.log("error fetching data: " + error)
+        })
+    }
 
     updateSearch = (searchVal) => {
         this.setState({ searchVal })
@@ -111,7 +129,6 @@ class PageList extends Component {
         } else {
             return desc
         }
-
     }
 
     triggerSearch = () => {
@@ -120,7 +137,6 @@ class PageList extends Component {
         } else {
             this.resetContext()
         }
-
     }
 
     resetContext = () => {
@@ -146,7 +162,6 @@ class PageList extends Component {
                 }
             }
         }
-
         this.setState({ favorites: favs }, () => this.syncDataFavorites())
     }
 
@@ -154,13 +169,13 @@ class PageList extends Component {
         try {
             await AsyncStorage.setItem('@MySuperStore:key', JSON.stringify(this.state.favorites));
         } catch (error) {
-            console.log("Can't save with AsyncStorage", error)
+            //console.log("Can't save with AsyncStorage", error)
         }
     }
 
     getAllFromFavorites = async () => {
         try {
-            console.log("Fetching favorites from asyncstorage")
+            //console.log("Fetching favorites from asyncstorage")
             const value = await AsyncStorage.getItem('@MySuperStore:key');
             if (value != null) {
                 // We have data!!
@@ -169,27 +184,33 @@ class PageList extends Component {
                 this.setState({ favorites: favs })
             }
         } catch (error) {
-            console.log("Can't load with AsyncStorage", error)
+            //console.log("Can't load with AsyncStorage", error)
         }
     }
 
     filterByFavorites = () => {
-        console.log("filtering by favorites")
-        this.setState({ filteredByFavorites: !this.state.filteredByFavorites })
+        let isFiltering = this.state.filteredByFavorites
+        this.setState({ filteredByFavorites: !isFiltering })
         this.props.navigation.setParams({
-            filteredByFavorites: this.state.filteredByFavorites,
+            filteredByFavorites: !isFiltering,
         })
-        if (this.state.filteredByFavorites) {
-
+        if (!isFiltering) {
+            //console.log("filtering by favorites")
+            this.setState({ characters: [] })
+            this.state.favorites.map(id => {
+                this.fetchOneFromAPI(id)
+            })
+        } else {
+            console.log("filtering by all")
+            this.resetContext()
         }
-
     }
 
     render() {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.globalView}>
-                <SearchBar
+                {this.state.filteredByFavorites ? null : <SearchBar
                     placeholder="Rechercher..."
                     onChangeText={this.updateSearch}
                     onClear={() => this.resetContext()}
@@ -199,14 +220,14 @@ class PageList extends Component {
                     style={styles.searchBar}
                     showLoading={this.state.isSearchLoading}
                     lightTheme={true}
-                />
+                />}
                 {this.state.characters.length != 0 ?
                     <FlatList
                         data={this.state.characters}
                         style={styles.characterFlatList}
                         onEndReachedThreshold={0.1}
                         onEndReached={({ distanceFromEnd }) => {
-                            this.addOffset()
+                            this.state.filteredByFavorites ? null : this.addOffset()
                         }}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => navigate('Detail', { id: item.id })} key={item.id}>
